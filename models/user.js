@@ -13,6 +13,19 @@ const UserSchema = new mongoose.Schema({
     	required: [true, "Please provide a password!"],
     	unique: false,
 	}, 
+	glevel: {
+
+    	type: String,
+    	required: [true, "Please give a grade level as a number 2-5!"],
+    	unique: false,
+	},
+	score: {
+
+    	type: Number,
+    	required: false,
+    	default: 0,
+    	unique: false,
+	}
 })
 
 module.exports = mongoose.model("User", UserSchema, "authDB");

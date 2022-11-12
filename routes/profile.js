@@ -5,7 +5,7 @@ const jwt = require("jsonwebtoken");
 const profileController = require('../controllers/profile');
 const User = require("../models/user");
 const auth = require("../auth");
-
+const JWT_SECRET = "hfdjsahkjfhkejhwafjk()234423hjdjfshfague==??fkjdlksafeda134v";
 // register endpoint
 router.post("/register", (request, response) => {
   // hash the password
@@ -16,6 +16,7 @@ router.post("/register", (request, response) => {
       const user = new User({
         email: request.body.email,
         password: hashedPassword,
+        glevel: request.body.glevel,
       });
 
       // save the new user
@@ -62,8 +63,10 @@ router.post("/login", (request, response) => {
             {
               userId: user._id,
               userEmail: user.email,
+              userGrade: user.glevel,
+              userScore: user.score,
             },
-            "RANDOM-TOKEN",
+            JWT_SECRET,
             { expiresIn: "24h" }
           );
 
@@ -91,7 +94,13 @@ router.post("/login", (request, response) => {
       });
 
 
-})
+});
+router.get('/register/:email', async (request, response) => {
+  User.findOne({email: request.params.email})
+    .then(user => {
+      response.json(user);
+    });
+});
 
 // authentication endpoint
 router.get("/auth-endpoint", auth, (request, response) => {
