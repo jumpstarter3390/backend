@@ -101,6 +101,13 @@ router.get('/register/:email', async (request, response) => {
       response.json(user);
     });
 });
+router.put('/register/update/:id', async (request, response) => {
+  User.findByIdAndUpdate(request.params.id, {score: request.body.score, isLoggedIn: request.body.isLoggedIn})
+    .then(user => {
+      response.json(user);
+    });
+});
+
 
 // authentication endpoint
 router.get("/auth-endpoint", auth, (request, response) => {
